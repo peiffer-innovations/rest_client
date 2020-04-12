@@ -49,6 +49,7 @@ var response = client.execute(
   request: request, 
 );
 
-var body
+var body = response.body;
+// do further processing here...
 ```
 
