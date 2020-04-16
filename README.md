@@ -1,6 +1,6 @@
 # rest_client
 
-![Dart CI](https://github.com/peiffer-innovations/rest_client/workflows/Dart%20CI/badge.svg)
+![Dart Publisher](https://github.com/peiffer-innovations/rest_client/workflows/Dart%20Publisher/badge.svg)
 
 A Dart and Flutter compatible library to simplify creating REST based API calls.
 
