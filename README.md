@@ -1,5 +1,7 @@
 # rest_client
 
+![Dart CI](https://github.com/peiffer-innovations/rest_client/workflows/Dart%20CI/badge.svg)
+
 A Dart and Flutter compatible library to simplify creating REST based API calls.
 
 For Flutter based applications, this will offload the JSON decoding to a
