@@ -22,4 +22,9 @@ jobs:
       run: pub run test
     - name: Run test coverage
       run: pub run test_coverage
-
+    - name: Publish
+      uses: sakebook/actions-flutter-pub-publisher@v1.2.1
+      with:
+        credential: ${{ secrets.CREDENTIAL_JSON }}
+        flutter_package: false
+        skip_test: true
