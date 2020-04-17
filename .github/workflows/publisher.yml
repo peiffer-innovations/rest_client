@@ -18,6 +18,8 @@ jobs:
       run: pub upgrade
     - name: Dart Analyzer
       run: dartanalyzer lib
+    - name: Code Format
+      run: dartfmt --set-exit-if-changed -w lib test
     - name: Run tests
       run: pub run test
     - name: Run test coverage
