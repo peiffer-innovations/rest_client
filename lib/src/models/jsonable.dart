@@ -23,7 +23,7 @@ abstract class Jsonable {
     double result;
     try {
       if (value is String) {
-        result = double.parse(value);
+        result = double.tryParse(value);
       } else if (value is double) {
         result = value;
       } else if (value is int) {
