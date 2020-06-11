@@ -1,6 +1,6 @@
 name: rest_client
 description: A Dart and Flutter based REST API client that simplifies making RESTful calls.  In Flutter, the response is processed on a separate Isolate to avoid causing jank on the UI thread for large responses.  In Dart Web, the response is processed on the main thread.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/peiffer-innovations/rest_client
 
 environment:
@@ -10,6 +10,7 @@ dependencies:
   http: ^0.12.0+4
   meta: ^1.1.8
   intl: ^0.16.1
+  json_class: ^1.0.1
   logging: ^0.11.4
   uuid: ^2.0.4
 

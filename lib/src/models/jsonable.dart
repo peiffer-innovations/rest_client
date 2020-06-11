@@ -1,85 +1,54 @@
-import 'dart:convert';
+import 'package:json_class/json_class.dart';
 
-import 'package:logging/logging.dart';
+/// Deprecated; use [JsonClass] directly instead.
+@deprecated
+abstract class Jsonable extends JsonClass {
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
+  static bool parseBool(dynamic value) => JsonClass.parseBool(value);
 
-abstract class Jsonable {
-  static final Logger _logger = Logger('Jsonable');
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
+  static double parseDouble(
+    dynamic value, [
+    double defaultValue,
+  ]) =>
+      JsonClass.parseDouble(value);
 
-  static bool parseBool(dynamic value) {
-    var result = false;
-
-    result = result || value == true;
-    result = result || parseInt(value) == 1;
-    if (result != true && value is String) {
-      var lower = value.toLowerCase();
-      result = result || lower == 'true';
-      result = result || lower == 'yes';
-    }
-
-    return result;
-  }
-
-  static double parseDouble(dynamic value) {
-    double result;
-    try {
-      if (value is String) {
-        result = double.tryParse(value);
-      } else if (value is double) {
-        result = value;
-      } else if (value is int) {
-        result = value.toDouble();
-      }
-    } catch (e, stack) {
-      _logger.finest('Error parsing: $value', e, stack);
-    }
-
-    return result;
-  }
-
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
   static Duration parseDurationFromMillis(
     dynamic value, [
     Duration defaultValue,
-  ]) {
-    var millis = parseInt(value);
+  ]) =>
+      JsonClass.parseDurationFromMillis(value, defaultValue);
 
-    return millis == null ? defaultValue : Duration(milliseconds: millis);
-  }
-
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
   static Duration parseDurationFromSeconds(
     dynamic value, [
     Duration defaultValue,
-  ]) {
-    var seconds = parseInt(value);
+  ]) =>
+      JsonClass.parseDurationFromSeconds(value, defaultValue);
 
-    return seconds == null ? defaultValue : Duration(seconds: seconds);
-  }
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
+  static int parseInt(
+    dynamic value, [
+    int defaultValue,
+  ]) =>
+      JsonClass.parseInt(value);
 
-  static int parseInt(dynamic value) => parseDouble(value)?.toInt();
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
+  static DateTime parseUtcMillis(
+    dynamic value, [
+    int defaultValue,
+  ]) =>
+      JsonClass.parseUtcMillis(value, defaultValue);
 
-  static DateTime parseUtcMillis(dynamic value) => value == null
-      ? null
-      : DateTime.fromMillisecondsSinceEpoch(
-          parseInt(value),
-          isUtc: true,
-        );
-
-  static List<dynamic> toJsonList(List<Jsonable> list) {
-    List<dynamic> result;
-
-    if (list != null) {
-      result = [];
-      for (var j in list) {
-        result.add(j.toJson());
-      }
-    }
-
-    return result;
-  }
-
-  Map<String, dynamic> toJson();
-
-  @override
-  String toString() {
-    return json.encode(toJson());
-  }
+  /// Deprecated; use [JsonClass] directly instead.
+  @deprecated
+  static List<dynamic> toJsonList(List<JsonClass> list) =>
+      JsonClass.toJsonList(list);
 }
