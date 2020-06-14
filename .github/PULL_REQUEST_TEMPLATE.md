@@ -29,5 +29,5 @@ Does your PR affect any UI screens?
 
 
 <!-- Links -->
-[Code Style Guide]: https://github.com/peiffer-innovations/documentation/blob/master/CODE_STYLE.md
+[Code Style Guide]: https://github.com/peiffer-innovations/documentation/blob/main/CODE_STYLE.md
 [pub versioning philosophy]: https://www.dartlang.org/tools/pub/versioning
