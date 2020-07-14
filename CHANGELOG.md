@@ -1,3 +1,8 @@
+## [1.0.4] - July 13th, 2020
+
+* Updated dependencies
+
+
 ## [1.0.3] - June 11th, 2020
 
 * Deprecated internal Jsonable class in favor of the [JsonClass](https://github.com/peiffer-innovations/json_class) package's version
