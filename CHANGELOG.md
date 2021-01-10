@@ -1,3 +1,8 @@
+## [1.0.6+2] - January 10th, 2021
+
+* Dependency updates
+
+
 ## [1.0.6+1] - August 22nd, 2020
 
 * Metadata
