@@ -5,7 +5,6 @@ export 'src/authorizers/token_authorizer.dart';
 export 'src/client/client.dart';
 export 'src/client/delay_strategy.dart';
 
-export 'src/models/jsonable.dart';
 export 'src/models/proxy.dart';
 export 'src/models/request.dart';
 export 'src/models/request_method.dart';

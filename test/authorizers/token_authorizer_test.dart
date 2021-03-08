@@ -20,23 +20,4 @@ void main() {
       'Bearer token',
     );
   });
-
-  test('TokenAuthorizer - no token', () {
-    try {
-      TokenAuthorizer(
-        token: null,
-      );
-      fail('Exception should have been thrown');
-    } catch (e) {
-      // SUCCESS!
-    }
-    try {
-      TokenAuthorizer(
-        token: '',
-      );
-      fail('Exception should have been thrown');
-    } catch (e) {
-      // SUCCESS!
-    }
-  });
 }

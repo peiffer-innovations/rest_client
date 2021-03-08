@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:rest_client/rest_client.dart';
 
-http.Client createHttpClient({Proxy proxy}) {
+http.Client createHttpClient({Proxy? proxy}) {
   var httpClient = HttpClient();
   if (proxy != null) {
     httpClient.findProxy = (uri) => 'PROXY ${proxy.url}';
@@ -19,10 +18,10 @@ http.Client createHttpClient({Proxy proxy}) {
   return IOClient(httpClient);
 }
 
-Future<dynamic> processJson(String body) async {
+Future<dynamic> processJson(String? body) async {
   dynamic responseBody;
   var receivePort = ReceivePort();
-  Isolate isolate;
+  late Isolate isolate;
   try {
     isolate = await Isolate.spawn(
       _toJsonObject,
@@ -34,7 +33,7 @@ Future<dynamic> processJson(String body) async {
 
     responseBody = await receivePort.first;
   } finally {
-    isolate?.kill();
+    isolate.kill();
   }
 
   return responseBody;
@@ -47,11 +46,11 @@ dynamic _toJsonObject(_IsolateJsonData data) {
   var sendPort = data.sendPort;
   dynamic result;
   try {
-    result = json.decode(body);
+    result = body == null ? null : json.decode(body);
 
-    sendPort?.send(result);
+    sendPort.send(result);
   } catch (e) {
-    sendPort?.send(null);
+    sendPort.send(null);
   }
 
   return result;
@@ -59,10 +58,10 @@ dynamic _toJsonObject(_IsolateJsonData data) {
 
 class _IsolateJsonData {
   _IsolateJsonData({
-    @required this.body,
-    @required this.sendPort,
-  })  : assert(body != null),
-        assert(sendPort != null);
-  final String body;
+    this.body,
+    required this.sendPort,
+  });
+
+  final String? body;
   final SendPort sendPort;
 }

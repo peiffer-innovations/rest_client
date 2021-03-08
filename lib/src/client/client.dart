@@ -37,11 +37,10 @@ class Client {
   /// single application wide instance to reuse for all calls, or to create
   /// instances on a more ad hoc basiss.  Both mechanisms are supported.
   Client({
-    Reporter reporter,
-    Proxy proxy,
+    Reporter? reporter,
+    Proxy? proxy,
     this.timeout = _kDefaultTimeout,
-  })  : assert(timeout != null),
-        assert(timeout.inMilliseconds >= 1000),
+  })  : assert(timeout.inMilliseconds >= 1000),
         _reporter = reporter,
         _proxy = proxy;
 
@@ -49,14 +48,14 @@ class Client {
 
   /// Sets the global [Proxy] for all [Client] instances to use as the fallback
   /// default.
-  static Proxy proxy;
+  static Proxy? proxy;
 
   /// Sets the global [Reporter] for all [Client] instances to use as the
   /// fallback default.
-  static Reporter reporter;
+  static Reporter? reporter;
 
-  final Proxy _proxy;
-  final Reporter _reporter;
+  final Proxy? _proxy;
+  final Reporter? _reporter;
   final Duration timeout;
 
   /// Executes the given [request].  This accepts an optional [authorizer] to
@@ -74,27 +73,23 @@ class Client {
   /// the [retryDelayStrategy].  If not set, this will default to
   /// [DelayStrategies.linear].
   Future<Response> execute({
-    Authorizer authorizer,
-    StreamController<Response> emitter,
-    @required Request request,
-    Reporter reporter,
+    Authorizer? authorizer,
+    StreamController<Response>? emitter,
+    required Request request,
+    Reporter? reporter,
     int retryCount = 0,
     Duration retryDelay = const Duration(seconds: 1),
-    DelayStrategy retryDelayStrategy,
-    Duration timeout,
+    DelayStrategy? retryDelayStrategy,
+    Duration? timeout,
   }) async {
-    assert(request != null);
     assert(timeout == null || timeout.inMilliseconds >= 1000);
-    assert(retryCount == null || retryCount >= 0);
-    assert(retryCount == null ||
-        retryCount == 0 ||
-        (retryDelay != null && retryDelay.inMilliseconds >= 1000));
+    assert(retryCount >= 0);
+    assert(retryCount == 0 || (retryDelay.inMilliseconds >= 1000));
 
     var attempts = 0;
     var initialRetryDelay = retryDelay;
     var fatalError = false;
-    while (fatalError != true &&
-        (attempts == 0 || attempts <= (retryCount ?? 0))) {
+    while (fatalError != true && (attempts == 0 || attempts <= retryCount)) {
       attempts++;
 
       var restClient = createHttpClient(proxy: _proxy ?? proxy);
@@ -112,14 +107,14 @@ class Client {
           Uri.parse(request.url),
         );
         if (request.body?.isNotEmpty == true) {
-          httpRequest.body = request.body;
+          httpRequest.body = request.body!;
         }
         httpRequest.headers.addAll(headers);
         authorizer?.secure(httpRequest);
 
-        String body;
-        int statusCode;
-        Map<String, String> responseHeaders;
+        String? body;
+        int? statusCode;
+        Map<String, String>? responseHeaders;
 
         dynamic exception;
         await reporter?.request(
@@ -175,17 +170,19 @@ class Client {
 
         if (exception == null) {
           await reporter?.success(
-            bytesReceived: body?.codeUnits?.length ?? 0,
-            bytesSent: request.body?.codeUnits?.length ?? 0,
+            bytesReceived: body?.codeUnits.length ?? 0,
+            bytesSent: request.body?.codeUnits.length ?? 0,
             endTime: DateTime.now().millisecondsSinceEpoch,
             method: method,
             requestId: requestId,
             startTime: startTime,
-            statusCode: response.statusCode,
+            statusCode: response.statusCode!,
             url: request.url,
           );
 
-          if (response.statusCode < 200 || response.statusCode >= 400) {
+          if (response.statusCode == null ||
+              response.statusCode! < 200 ||
+              response.statusCode! >= 400) {
             throw RestException(
               message: exception != null
                   ? 'Error from server: ${exception}'
@@ -198,18 +195,13 @@ class Client {
             message: exception != null
                 ? 'Error from server: ${exception}'
                 : 'Error code received from server: ${response.statusCode}',
-            response: response ??
-                Response(
-                  body: null,
-                  headers: {},
-                  statusCode: 500,
-                ),
+            response: response,
           );
         }
         return response;
       } catch (e) {
         _logger.severe('Error: ${request.url}');
-        if (retryCount == null || retryCount < attempts) {
+        if (retryCount < attempts) {
           rethrow;
         }
         _logger.severe(
@@ -231,8 +223,7 @@ class Client {
           initial: initialRetryDelay,
         );
       } finally {
-        restClient?.close();
-        restClient = null;
+        restClient.close();
       }
     }
 
@@ -241,7 +232,9 @@ class Client {
 
   /// Returns if the given status code should be considered fatal.  A fatal
   /// error is one where an as-is retry is virtually guaranteed to fail.
-  bool _isFatal(int status) => [
+  bool _isFatal(int? status) =>
+      status == null ||
+      [
         400, // Bad Request
         401, // Unauthorized
         402, // Payment Required

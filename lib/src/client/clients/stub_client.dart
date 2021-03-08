@@ -1,8 +1,8 @@
 import 'package:rest_client/rest_client.dart';
 import 'package:http/http.dart' as http;
 
-http.Client createHttpClient({Proxy proxy}) => throw UnimplementedError();
+http.Client createHttpClient({Proxy? proxy}) => throw UnimplementedError();
 
-Future<dynamic> processJson(String body) => throw UnimplementedError();
+Future<dynamic> processJson(String? body) => throw UnimplementedError();
 
 bool shouldSpawnIsolate() => throw UnimplementedError();

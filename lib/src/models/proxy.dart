@@ -6,8 +6,8 @@ import 'package:meta/meta.dart';
 class Proxy {
   Proxy({
     this.ignoreBadCertificate = false,
-    @required this.url,
-  }) : assert(url?.isNotEmpty == true);
+    required this.url,
+  });
 
   /// Instructs the application to ignore SSL errors.
   final bool ignoreBadCertificate;

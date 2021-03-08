@@ -6,20 +6,20 @@ import 'package:meta/meta.dart';
 @immutable
 class ChainedReporter implements Reporter {
   ChainedReporter({
-    @required List<Reporter> children,
+    required List<Reporter>? children,
   }) : children = List.unmodifiable(children ?? []);
 
   final List<Reporter> children;
 
   @override
   Future<void> failure({
-    @required int endTime,
-    @required String exception,
-    @required String method,
-    @required String requestId,
-    @required StackTrace stack,
-    @required int startTime,
-    @required String url,
+    required int endTime,
+    required String exception,
+    required String method,
+    required String requestId,
+    required StackTrace stack,
+    required int startTime,
+    required String url,
   }) async {
     for (var reporter in children) {
       await reporter.failure(
@@ -36,11 +36,11 @@ class ChainedReporter implements Reporter {
 
   @override
   Future<void> request({
-    @required dynamic body,
-    @required Map<String, String> headers,
-    @required String method,
-    @required String requestId,
-    @required String url,
+    required dynamic body,
+    required Map<String, String> headers,
+    required String method,
+    required String requestId,
+    required String url,
   }) async {
     for (var reporter in children) {
       await reporter.request(
@@ -55,11 +55,10 @@ class ChainedReporter implements Reporter {
 
   @override
   Future<void> response({
-    @required dynamic body,
-    @required Map<String, String> headers,
-    @required String requestId,
-    @required int statusCode,
-    @required String url,
+    required dynamic? body,
+    required Map<String, String>? headers,
+    required String requestId,
+    required int statusCode,
   }) async {
     for (var reporter in children) {
       await reporter.response(
@@ -73,14 +72,14 @@ class ChainedReporter implements Reporter {
 
   @override
   Future<void> success({
-    @required int bytesReceived,
-    @required int bytesSent,
-    @required int endTime,
-    @required String method,
-    @required String requestId,
-    @required int startTime,
-    @required int statusCode,
-    @required String url,
+    required int bytesReceived,
+    required int bytesSent,
+    required int endTime,
+    required String method,
+    required String requestId,
+    required int startTime,
+    required int statusCode,
+    required String url,
   }) async {
     for (var reporter in children) {
       await reporter.success(

@@ -7,14 +7,13 @@ class Request {
   Request({
     this.body,
     this.headers,
-    RequestMethod method,
-    @required this.url,
-  })  : assert(url?.isNotEmpty == true),
-        method =
+    RequestMethod? method,
+    required this.url,
+  }) : method =
             method ?? (body == null ? RequestMethod.get : RequestMethod.post);
 
-  final String body;
-  final Map<String, String> headers;
+  final String? body;
+  final Map<String, String>? headers;
   final RequestMethod method;
   final String url;
 
@@ -24,9 +23,8 @@ class Request {
   Map<String, String> prepareHeaders() {
     var headers = <String, String>{};
     if (this.headers != null) {
-      headers = Map<String, String>.from(this.headers);
+      headers = Map<String, String>.from(this.headers!);
     }
-    headers = headers ?? {};
 
     if (headers['accept']?.isNotEmpty != true) {
       headers['accept'] = 'application/json';
@@ -42,10 +40,10 @@ class Request {
   }
 
   Request copyWith({
-    String body,
-    Map<String, String> headers,
-    RequestMethod method,
-    String url,
+    String? body,
+    Map<String, String>? headers,
+    RequestMethod? method,
+    String? url,
   }) =>
       Request(
         body: body ?? this.body,

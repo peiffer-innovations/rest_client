@@ -5,9 +5,9 @@ import 'response.dart';
 @immutable
 class RestException implements Exception {
   const RestException({
-    @required this.response,
-    @required this.message,
-  }) : assert(response != null);
+    required this.message,
+    required this.response,
+  });
 
   final String message;
   final Response response;

@@ -3,12 +3,12 @@ import 'package:meta/meta.dart';
 @immutable
 class Response {
   Response({
-    @required this.body,
-    @required this.headers,
-    @required this.statusCode,
+    this.body,
+    this.headers,
+    this.statusCode,
   });
 
-  final dynamic body;
-  final Map<String, String> headers;
-  final int statusCode;
+  final dynamic? body;
+  final Map<String, String>? headers;
+  final int? statusCode;
 }
