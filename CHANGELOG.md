@@ -1,6 +1,7 @@
-## [2.0.1] - April 11th, 2021
+## [2.0.1+1] - April 11th, 2021
 
 * Fix for issue #4
+* Fix for issue #5
 
 
 ## [2.0.0] - March 7th, 2021

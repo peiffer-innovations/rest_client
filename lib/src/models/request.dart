@@ -23,7 +23,9 @@ class Request {
   Map<String, String> prepareHeaders() {
     var headers = <String, String>{};
     if (this.headers != null) {
-      headers = Map<String, String>.from(this.headers!);
+      this.headers!.forEach((key, value) {
+        headers[key.toLowerCase()] = value;
+      });
     }
 
     if (headers['accept']?.isNotEmpty != true) {
