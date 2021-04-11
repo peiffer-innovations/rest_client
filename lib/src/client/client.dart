@@ -107,7 +107,7 @@ class Client {
           Uri.parse(request.url),
         );
         if (request.body?.isNotEmpty == true) {
-          httpRequest.body = request.body!;
+          httpRequest.body = request.body ?? '';
         }
         httpRequest.headers.addAll(headers);
         authorizer?.secure(httpRequest);
@@ -155,7 +155,7 @@ class Client {
 
         dynamic responseBody;
         if (body?.isNotEmpty == true) {
-          responseBody = await processJson(body);
+          responseBody = await processJson(body!);
         }
 
         var response = Response(

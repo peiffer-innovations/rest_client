@@ -11,7 +11,6 @@ void main() {
     var client = Client();
     var response = await client.execute(request: request);
 
-    expect(true, response != null);
     expect(true, response.body != null);
   });
 }
