@@ -1,3 +1,8 @@
+## [2.0.1+2] - May 29th, 2021
+
+* Static analysis fixes
+
+
 ## [2.0.1+1] - April 11th, 2021
 
 * Fix for issue #4

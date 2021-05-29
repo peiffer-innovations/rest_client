@@ -29,7 +29,7 @@ abstract class Reporter {
   /// Called by the [RestClient] just after receiving the response from the
   /// remote server.
   Future<void> response({
-    required dynamic? body,
+    required dynamic body,
     required Map<String, String>? headers,
     required String requestId,
     required int statusCode,

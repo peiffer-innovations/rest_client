@@ -53,7 +53,7 @@ API REQUEST:
 
   @override
   Future<void> response({
-    required dynamic? body,
+    required dynamic body,
     required Map<String, String>? headers,
     required String requestId,
     required int statusCode,

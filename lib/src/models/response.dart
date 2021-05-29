@@ -8,7 +8,7 @@ class Response {
     this.statusCode,
   });
 
-  final dynamic? body;
+  final dynamic body;
   final Map<String, String>? headers;
   final int? statusCode;
 }
