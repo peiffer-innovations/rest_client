@@ -1,5 +1,5 @@
-import 'package:rest_client/rest_client.dart';
 import 'package:logging/logging.dart';
+import 'package:rest_client/rest_client.dart';
 
 /// Reporter that will write API events to either the provided [Logger], or a
 /// global default one.

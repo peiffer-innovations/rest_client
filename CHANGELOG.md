@@ -1,3 +1,9 @@
+## [2.0.1+3] - September 19th, 2021
+
+* Dependency updates
+* Flutter 2.5 analysis fixes
+
+
 ## [2.0.1+2] - May 29th, 2021
 
 * Static analysis fixes

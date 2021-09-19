@@ -1,5 +1,5 @@
-import 'package:rest_client/rest_client.dart';
 import 'package:meta/meta.dart';
+import 'package:rest_client/rest_client.dart';
 
 /// Reporter that will chain the the reporting calls through a list of child
 /// [Reporter].

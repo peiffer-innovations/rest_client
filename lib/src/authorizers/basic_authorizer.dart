@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:rest_client/rest_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:rest_client/rest_client.dart';
 
 /// Authorizor that supports BASIC HTTP Authentication.
 @immutable
