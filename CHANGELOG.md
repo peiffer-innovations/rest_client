@@ -1,3 +1,8 @@
+## [2.0.1+6] - January, 2022
+
+* Dart 2.15
+
+
 ## [2.0.1+5] - December 8th, 2021
 
 * Dependency updates
