@@ -75,6 +75,7 @@ class Client {
   Future<Response> execute({
     Authorizer? authorizer,
     StreamController<Response>? emitter,
+    bool jsonResponse = true,
     required Request request,
     Reporter? reporter,
     int retryCount = 0,
@@ -112,7 +113,7 @@ class Client {
         httpRequest.headers.addAll(headers);
         await authorizer?.secure(httpRequest);
 
-        String? body;
+        dynamic body;
         int? statusCode;
         Map<String, String>? responseHeaders;
 
@@ -129,7 +130,11 @@ class Client {
           var response = await restClient.send(httpRequest).timeout(
                 timeout ?? this.timeout,
               );
-          body = await response.stream.transform(utf8.decoder).join();
+          if (!jsonResponse) {
+            body = await response.stream.toBytes();
+          } else {
+            body = await response.stream.transform(utf8.decoder).join();
+          }
           responseHeaders = response.headers;
           statusCode = response.statusCode;
 
@@ -153,8 +158,8 @@ class Client {
           );
         }
 
-        dynamic responseBody;
-        if (body?.isNotEmpty == true) {
+        dynamic responseBody = body;
+        if (jsonResponse && body?.isNotEmpty == true) {
           responseBody = await processJson(body!);
         }
 

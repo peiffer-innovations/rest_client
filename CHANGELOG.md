@@ -1,6 +1,7 @@
 ## [2.1.0] - March 5th, 2022
 
 * Switched authorizer to return a Future
+* Added option to accept a binary response
 
 
 ## [2.0.1+7] - February 6th, 2022
