@@ -19,7 +19,7 @@ class BasicAuthorizer extends Authorizer {
   /// Secures the request by adding the basic `authorization` header with the
   /// base64 encoded version of the [username] and [password].
   @override
-  void secure(http.Request httpRequest) {
+  Future<void> secure(http.Request httpRequest) async {
     var b64 = base64.encode(utf8.encode('$username:$password'));
 
     httpRequest.headers['authorization'] = 'Basic $b64';

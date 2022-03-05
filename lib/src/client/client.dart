@@ -110,7 +110,7 @@ class Client {
           httpRequest.body = request.body ?? '';
         }
         httpRequest.headers.addAll(headers);
-        authorizer?.secure(httpRequest);
+        await authorizer?.secure(httpRequest);
 
         String? body;
         int? statusCode;

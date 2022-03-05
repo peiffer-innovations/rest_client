@@ -3,7 +3,7 @@ import 'package:rest_client/rest_client.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('BasicAuthorizer.secure', () {
+  test('BasicAuthorizer.secure', () async {
     var authorizer = BasicAuthorizer(
       username: 'username',
       password: 'password',
@@ -14,7 +14,7 @@ void main() {
       Uri.parse('https://google.com'),
     );
 
-    authorizer.secure(httpRequest);
+    await authorizer.secure(httpRequest);
 
     expect(
       httpRequest.headers['authorization'],

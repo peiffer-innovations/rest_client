@@ -14,7 +14,7 @@ class TokenAuthorizer extends Authorizer {
 
   /// Attaches the token as a `Bearer` token to the `authorization` header.
   @override
-  void secure(http.Request httpRequest) {
+  Future<void> secure(http.Request httpRequest) async {
     httpRequest.headers['authorization'] = 'Bearer $token';
   }
 }

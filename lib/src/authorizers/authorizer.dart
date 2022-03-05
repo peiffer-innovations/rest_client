@@ -4,5 +4,5 @@ import 'package:http/http.dart' as http;
 abstract class Authorizer {
   /// Alters the given request to provide the appropriate authorization to make
   /// the API calls.
-  void secure(http.Request httpRequest);
+  Future<void> secure(http.Request httpRequest);
 }

@@ -1,9 +1,14 @@
+## [2.1.0] - March 5th, 2022
+
+* Switched authorizer to return a Future
+
+
 ## [2.0.1+7] - February 6th, 2022
 
 * Dependency updates
 
 
-## [2.0.1+6] - January, 2022
+## [2.0.1+6] - January 3rd, 2022
 
 * Dart 2.15
 
