@@ -35,9 +35,11 @@ class Request {
       headers['content-type'] = 'application/json';
     }
 
-    if (!headers.containsKey('language')) {
-      headers['language'] = Intl.defaultLocale ?? 'en_US';
+    if (!headers.containsKey('accept-language')) {
+      headers['accept-language'] = Intl.defaultLocale ?? 'en_US';
     }
+    headers.removeWhere((key, value) => value.isEmpty);
+
     return headers;
   }
 

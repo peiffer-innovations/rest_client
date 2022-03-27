@@ -1,6 +1,8 @@
 ## [2.1.1] - March 27th, 2022
 
 * Added `lookup` to `RequestMethod`.
+* Renamed `language` to `accept-language`.
+* Updated to remove empty headers.
 
 
 ## [2.1.0] - March 5th, 2022
