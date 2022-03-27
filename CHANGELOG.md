@@ -1,3 +1,8 @@
+## [2.1.1] - March 27th, 2022
+
+* Added `lookup` to `RequestMethod`.
+
+
 ## [2.1.0] - March 5th, 2022
 
 * Switched authorizer to return a Future
