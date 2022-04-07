@@ -4,7 +4,7 @@ version: 2.1.1
 homepage: https://github.com/peiffer-innovations/rest_client
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   http: ^0.13.4
