@@ -1,3 +1,9 @@
+## [2.1.2] - April 16th, 2022
+
+* Disabled the isolate when running in debug mode due to a bug in the VS Code debugger that can cause the isolate to hang.
+* Added the ability to disable the isolate to improve performance when it it is known that small responses will be encountered.
+
+
 ## [2.1.1] - March 27th, 2022
 
 * Added `lookup` to `RequestMethod`.

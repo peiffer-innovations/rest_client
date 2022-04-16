@@ -39,8 +39,6 @@ Future<dynamic> processJson(String? body) async {
   return responseBody;
 }
 
-bool shouldSpawnIsolate() => true;
-
 dynamic _toJsonObject(_IsolateJsonData data) {
   var body = data.body;
   var sendPort = data.sendPort;

@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:rest_client/rest_client.dart';
 import 'package:uuid/uuid.dart';
 
@@ -25,7 +24,6 @@ import 'clients/stub_client.dart'
 
 const _kDefaultTimeout = Duration(seconds: 60);
 
-@immutable
 class Client {
   /// Constructs the client with instance level defaults for the [reporter],
   /// [proxy], and [timeout].  All of which are optional.
@@ -36,13 +34,26 @@ class Client {
   /// Because this is immutable, users of this have the option to create a
   /// single application wide instance to reuse for all calls, or to create
   /// instances on a more ad hoc basiss.  Both mechanisms are supported.
+  ///
+  /// By default this uses an isolate in Release and Profile mode to avoid
+  /// allowing large responses to jank the UI and disables the isolate in Debug
+  /// mode because the VS Code debugging plugin sometimes deadlocks due to
+  /// isolates.
   Client({
     Reporter? reporter,
     Proxy? proxy,
     this.timeout = _kDefaultTimeout,
+    bool? useIsolate,
   })  : assert(timeout.inMilliseconds >= 1000),
         _reporter = reporter,
-        _proxy = proxy;
+        _proxy = proxy {
+    assert(() {
+      _useIsolate = false;
+      return true;
+    }());
+
+    _useIsolate = useIsolate ?? _useIsolate;
+  }
 
   static final Logger _logger = Logger('Client');
 
@@ -57,6 +68,8 @@ class Client {
   final Proxy? _proxy;
   final Reporter? _reporter;
   final Duration timeout;
+
+  bool _useIsolate = true;
 
   /// Executes the given [request].  This accepts an optional [authorizer] to
   /// provide authorization to the final end point.
@@ -159,8 +172,9 @@ class Client {
         }
 
         dynamic responseBody = body;
-        if (jsonResponse && body?.isNotEmpty == true) {
-          responseBody = await processJson(body!);
+        if (jsonResponse && body != null && body.isNotEmpty == true) {
+          responseBody =
+              _useIsolate == true ? await processJson(body) : json.decode(body);
         }
 
         var response = Response(
