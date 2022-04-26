@@ -1,3 +1,9 @@
+## [2.1.3] - April 25th, 2022
+
+* Removed nullability from response values that should always have to be set.
+* Fall back to returning the plain body when not proper JSON to allow the end user app to decide what to do.
+
+
 ## [2.1.2] - April 16th, 2022
 
 * Disabled the isolate when running in debug mode due to a bug in the VS Code debugger that can cause the isolate to hang.

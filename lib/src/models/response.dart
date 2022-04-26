@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 class Response {
   Response({
     this.body,
-    this.headers,
-    this.statusCode,
+    required this.headers,
+    required this.statusCode,
   });
 
   final dynamic body;
-  final Map<String, String>? headers;
-  final int? statusCode;
+  final Map<String, String> headers;
+  final int statusCode;
 }

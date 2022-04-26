@@ -127,8 +127,8 @@ class Client {
         await authorizer?.secure(httpRequest);
 
         dynamic body;
-        int? statusCode;
-        Map<String, String>? responseHeaders;
+        var statusCode = -1;
+        var responseHeaders = <String, String>{};
 
         dynamic exception;
         await reporter?.request(
@@ -173,8 +173,13 @@ class Client {
 
         dynamic responseBody = body;
         if (jsonResponse && body != null && body.isNotEmpty == true) {
-          responseBody =
-              _useIsolate == true ? await processJson(body) : json.decode(body);
+          try {
+            responseBody = _useIsolate == true
+                ? await processJson(body)
+                : json.decode(body);
+          } catch (e) {
+            _logger.warning('Expected a JSON body, but did not encounter one');
+          }
         }
 
         var response = Response(
@@ -195,13 +200,11 @@ class Client {
             method: method,
             requestId: requestId,
             startTime: startTime,
-            statusCode: response.statusCode!,
+            statusCode: response.statusCode,
             url: request.url,
           );
 
-          if (response.statusCode == null ||
-              response.statusCode! < 200 ||
-              response.statusCode! >= 400) {
+          if (response.statusCode < 200 || response.statusCode >= 400) {
             throw RestException(
               message: exception != null
                   ? 'Error from server: ${exception}'
