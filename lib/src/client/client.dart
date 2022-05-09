@@ -172,7 +172,13 @@ class Client {
         }
 
         dynamic responseBody = body;
-        if (jsonResponse && body != null && body.isNotEmpty == true) {
+        var contentType = responseHeaders['content-type'];
+        if (jsonResponse &&
+            (contentType == null ||
+                contentType.contains('application/json') ||
+                contentType.contains('text/json')) &&
+            body != null &&
+            body.isNotEmpty == true) {
           try {
             responseBody = _useIsolate == true
                 ? await processJson(body)
@@ -180,6 +186,9 @@ class Client {
           } catch (e) {
             _logger.warning('Expected a JSON body, but did not encounter one');
           }
+        } else if (contentType?.startsWith('text/') == true &&
+            body is List<int>) {
+          responseBody = utf8.decode(body);
         }
 
         var response = Response(
@@ -227,7 +236,8 @@ class Client {
           rethrow;
         }
         _logger.severe(
-            'Attempt failed: ($attempts of $retryCount) waiting ${retryDelay.inMilliseconds}ms');
+          'Attempt failed: ($attempts of $retryCount) waiting ${retryDelay.inMilliseconds}ms',
+        );
 
         if (emitter?.isClosed == true) {
           _logger.info('Emitter is closed; cancelling');

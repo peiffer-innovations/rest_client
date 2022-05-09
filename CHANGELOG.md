@@ -1,3 +1,8 @@
+## [2.1.4] - May 9th, 2022
+
+* Updated to restrict when to process when the content type explicitly tells us it is not JSON.
+
+
 ## [2.1.3] - April 25th, 2022
 
 * Removed nullability from response values that should always have to be set.
