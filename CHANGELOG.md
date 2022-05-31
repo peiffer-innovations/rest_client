@@ -1,3 +1,8 @@
+## [2.1.4+1] - May, 31, 2022
+
+* Automated dependency updates
+
+
 ## [2.1.4] - May 9th, 2022
 
 * Updated to restrict when to process when the content type explicitly tells us it is not JSON.
@@ -113,3 +118,4 @@
 ## [1.0.0] - April 12th, 2020
 
 * Initial release
+
