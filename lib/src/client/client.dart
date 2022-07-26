@@ -185,11 +185,14 @@ class Client {
             body != null &&
             body.isNotEmpty == true) {
           try {
-            responseBody = _useIsolate == true ? await processJson(body) : json.decode(body);
+            responseBody = _useIsolate == true
+                ? await processJson(body)
+                : json.decode(body);
           } catch (e) {
             _logger.warning('Expected a JSON body, but did not encounter one');
           }
-        } else if (contentType?.startsWith('text/') == true && body is List<int>) {
+        } else if (contentType?.startsWith('text/') == true &&
+            body is List<int>) {
           responseBody = utf8.decode(body);
         }
 
@@ -215,7 +218,8 @@ class Client {
             url: request.url,
           );
 
-          if (throwRestExceptions && (response.statusCode < 200 || response.statusCode >= 400)) {
+          if (throwRestExceptions &&
+              (response.statusCode < 200 || response.statusCode >= 400)) {
             throw RestException(
               message: exception != null
                   ? 'Error from server: ${exception}'
