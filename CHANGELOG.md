@@ -1,3 +1,8 @@
+## [2.1.5+1] - September 6, 2022
+
+* Automated dependency updates
+
+
 ## [2.1.5] - August 24th, 2022
 
 * Option to not throw exception on execute
@@ -158,6 +163,7 @@
 ## [1.0.0] - April 12th, 2020
 
 * Initial release
+
 
 
 
