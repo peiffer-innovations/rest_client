@@ -25,8 +25,8 @@ import 'clients/stub_client.dart'
 const _kDefaultTimeout = Duration(seconds: 60);
 
 class Client {
-  /// Constructs the client with instance level defaults for the [reporter],
-  /// [proxy], and [timeout].  All of which are optional.
+  /// Constructs the client with instance level defaults for the [interceptor],
+  /// [reporter], [proxy], and [timeout].  All of which are optional.
   ///
   /// If the [timeout] is set, it must be at least 1 second.  Otherwise it will
   /// default to 60 seconds.
@@ -40,11 +40,13 @@ class Client {
   /// mode because the VS Code debugging plugin sometimes deadlocks due to
   /// isolates.
   Client({
+    Interceptor? interceptor,
     Reporter? reporter,
     Proxy? proxy,
     this.timeout = _kDefaultTimeout,
     bool? useIsolate,
   })  : assert(timeout.inMilliseconds >= 1000),
+        _interceptor = interceptor,
         _reporter = reporter,
         _proxy = proxy {
     assert(() {
@@ -57,6 +59,10 @@ class Client {
 
   static final Logger _logger = Logger('Client');
 
+  /// Sets the global [Interceptor] for all [Client] instances to use as the
+  /// fallback default.
+  static Interceptor? interceptor;
+
   /// Sets the global [Proxy] for all [Client] instances to use as the fallback
   /// default.
   static Proxy? proxy;
@@ -65,6 +71,7 @@ class Client {
   /// fallback default.
   static Reporter? reporter;
 
+  final Interceptor? _interceptor;
   final Proxy? _proxy;
   final Reporter? _reporter;
   final Duration timeout;
@@ -108,6 +115,13 @@ class Client {
     var attempts = 0;
     var initialRetryDelay = retryDelay;
     var fatalError = false;
+
+    request = (await (_interceptor ?? interceptor)?.modifyRequest(
+          this,
+          request,
+        )) ??
+        request;
+
     while (fatalError != true && (attempts == 0 || attempts <= retryCount)) {
       attempts++;
 
@@ -144,63 +158,78 @@ class Client {
           url: request.url,
         );
 
-        try {
-          var response = await restClient.send(httpRequest).timeout(
-                timeout ?? this.timeout,
-              );
-          if (!jsonResponse) {
-            body = await response.stream.toBytes();
-          } else {
-            body = await response.stream.transform(utf8.decoder).join();
-          }
-          responseHeaders = response.headers;
-          statusCode = response.statusCode;
-
-          await reporter?.response(
-            body: body,
-            headers: response.headers,
-            requestId: requestId,
-            statusCode: response.statusCode,
-          );
-        } catch (e, stack) {
-          exception = e;
-
-          await reporter?.failure(
-            endTime: DateTime.now().millisecondsSinceEpoch,
-            exception: e.toString(),
-            method: method,
-            requestId: requestId,
-            stack: stack,
-            startTime: startTime,
-            url: request.url,
-          );
-        }
-
-        dynamic responseBody = body;
-        var contentType = responseHeaders['content-type'];
-        if (jsonResponse &&
-            (contentType == null ||
-                contentType.contains('application/json') ||
-                contentType.contains('text/json')) &&
-            body != null &&
-            body.isNotEmpty == true) {
-          try {
-            responseBody = _useIsolate == true
-                ? await processJson(body)
-                : json.decode(body);
-          } catch (e) {
-            _logger.warning('Expected a JSON body, but did not encounter one');
-          }
-        } else if (contentType?.startsWith('text/') == true &&
-            body is List<int>) {
-          responseBody = utf8.decode(body);
-        }
-
-        var response = Response(
-          body: responseBody,
-          headers: responseHeaders,
-          statusCode: statusCode,
+        var response = await (_interceptor ?? interceptor)?.interceptRequest(
+          this,
+          request,
         );
+
+        if (response == null) {
+          try {
+            var clientResponse = await restClient.send(httpRequest).timeout(
+                  timeout ?? this.timeout,
+                );
+            if (!jsonResponse) {
+              body = await clientResponse.stream.toBytes();
+            } else {
+              body = await clientResponse.stream.transform(utf8.decoder).join();
+            }
+            responseHeaders = clientResponse.headers;
+            statusCode = clientResponse.statusCode;
+
+            await reporter?.response(
+              body: body,
+              headers: clientResponse.headers,
+              requestId: requestId,
+              statusCode: clientResponse.statusCode,
+            );
+          } catch (e, stack) {
+            exception = e;
+
+            await reporter?.failure(
+              endTime: DateTime.now().millisecondsSinceEpoch,
+              exception: e.toString(),
+              method: method,
+              requestId: requestId,
+              stack: stack,
+              startTime: startTime,
+              url: request.url,
+            );
+          }
+
+          dynamic responseBody = body;
+          var contentType = responseHeaders['content-type'];
+          if (jsonResponse &&
+              (contentType == null ||
+                  contentType.contains('application/json') ||
+                  contentType.contains('text/json')) &&
+              body != null &&
+              body.isNotEmpty == true) {
+            try {
+              responseBody = _useIsolate == true
+                  ? await processJson(body)
+                  : json.decode(body);
+            } catch (e) {
+              _logger
+                  .warning('Expected a JSON body, but did not encounter one');
+            }
+          } else if (contentType?.startsWith('text/') == true &&
+              body is List<int>) {
+            responseBody = utf8.decode(body);
+          }
+
+          response = Response(
+            body: responseBody,
+            headers: responseHeaders,
+            statusCode: statusCode,
+          );
+        }
+
+        response = await (_interceptor ?? interceptor)?.modifyResponse(
+              this,
+              request,
+              response,
+            ) ??
+            response;
 
         // If the response is fatal (as in, a retry is exceptionally unlikely to
         // succeed), then set the flag to abort any regry logic.
