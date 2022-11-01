@@ -1,3 +1,8 @@
+## [2.2.0+1] - November 1, 2022
+
+* Automated dependency updates
+
+
 ## [2.2.0] - October 23rd, 2022
 
 * Added [Interceptor] capabilities
@@ -188,6 +193,7 @@
 ## [1.0.0] - April 12th, 2020
 
 * Initial release
+
 
 
 
