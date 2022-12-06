@@ -23,7 +23,7 @@ class RequestMethod {
   /// Looks up the code from given string [code].  The [code] is
   /// case-insensitive.
   static RequestMethod lookup(String code) {
-    var result = _all[code.toUpperCase()];
+    final result = _all[code.toUpperCase()];
 
     if (result == null) {
       throw Exception('Unknown code for Request Method: [$code].');

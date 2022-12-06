@@ -4,11 +4,11 @@ import 'package:test/test.dart';
 
 void main() {
   test('TokenAuthorizer.secure', () async {
-    var authorizer = TokenAuthorizer(
+    final authorizer = TokenAuthorizer(
       token: 'token',
     );
 
-    var httpRequest = http.Request(
+    final httpRequest = http.Request(
       'GET',
       Uri.parse('https://google.com'),
     );

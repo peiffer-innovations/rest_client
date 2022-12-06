@@ -7,7 +7,7 @@ import 'package:http/io_client.dart';
 import 'package:rest_client/rest_client.dart';
 
 http.Client createHttpClient({Proxy? proxy}) {
-  var httpClient = HttpClient();
+  final httpClient = HttpClient();
   if (proxy != null) {
     httpClient.findProxy = (uri) => 'PROXY ${proxy.url}';
     if (proxy.ignoreBadCertificate == true) {
@@ -20,7 +20,7 @@ http.Client createHttpClient({Proxy? proxy}) {
 
 Future<dynamic> processJson(String? body) async {
   dynamic responseBody;
-  var receivePort = ReceivePort();
+  final receivePort = ReceivePort();
   late Isolate isolate;
   try {
     isolate = await Isolate.spawn(
@@ -40,8 +40,8 @@ Future<dynamic> processJson(String? body) async {
 }
 
 dynamic _toJsonObject(_IsolateJsonData data) {
-  var body = data.body;
-  var sendPort = data.sendPort;
+  final body = data.body;
+  final sendPort = data.sendPort;
   dynamic result;
   try {
     result = body == null ? null : json.decode(body);

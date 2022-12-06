@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+
 import 'request_method.dart';
 
 @immutable
@@ -21,7 +22,7 @@ class Request {
   /// apply the `content-type` header and the `accept` header if not already
   /// set.
   Map<String, String> prepareHeaders() {
-    var headers = <String, String>{};
+    final headers = <String, String>{};
     if (this.headers != null) {
       this.headers!.forEach((key, value) {
         headers[key.toLowerCase()] = value;

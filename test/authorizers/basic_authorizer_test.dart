@@ -4,12 +4,12 @@ import 'package:test/test.dart';
 
 void main() {
   test('BasicAuthorizer.secure', () async {
-    var authorizer = BasicAuthorizer(
+    final authorizer = BasicAuthorizer(
       username: 'username',
       password: 'password',
     );
 
-    var httpRequest = http.Request(
+    final httpRequest = http.Request(
       'GET',
       Uri.parse('https://google.com'),
     );

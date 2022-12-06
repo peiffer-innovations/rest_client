@@ -113,7 +113,7 @@ class Client {
     assert(retryCount == 0 || (retryDelay.inMilliseconds >= 1000));
 
     var attempts = 0;
-    var initialRetryDelay = retryDelay;
+    final initialRetryDelay = retryDelay;
     var fatalError = false;
 
     request = (await (_interceptor ?? interceptor)?.modifyRequest(
@@ -125,17 +125,17 @@ class Client {
     while (fatalError != true && (attempts == 0 || attempts <= retryCount)) {
       attempts++;
 
-      var restClient = createHttpClient(proxy: _proxy ?? proxy);
+      final restClient = createHttpClient(proxy: _proxy ?? proxy);
 
       try {
         reporter = reporter ?? _reporter ?? Client.reporter;
 
-        var requestId = Uuid().v4();
-        var startTime = DateTime.now().millisecondsSinceEpoch;
-        var headers = request.prepareHeaders();
-        var method = request.method.toString();
+        final requestId = const Uuid().v4();
+        final startTime = DateTime.now().millisecondsSinceEpoch;
+        final headers = request.prepareHeaders();
+        final method = request.method.toString();
 
-        var httpRequest = http.Request(
+        final httpRequest = http.Request(
           method,
           Uri.parse(request.url),
         );
@@ -165,7 +165,7 @@ class Client {
 
         if (response == null) {
           try {
-            var clientResponse = await restClient.send(httpRequest).timeout(
+            final clientResponse = await restClient.send(httpRequest).timeout(
                   timeout ?? this.timeout,
                 );
             if (!jsonResponse) {
@@ -197,7 +197,7 @@ class Client {
           }
 
           dynamic responseBody = body;
-          var contentType = responseHeaders['content-type'];
+          final contentType = responseHeaders['content-type'];
           if (jsonResponse &&
               (contentType == null ||
                   contentType.contains('application/json') ||
@@ -284,7 +284,7 @@ class Client {
           rethrow;
         }
 
-        var strategy = retryDelayStrategy ?? DelayStrategies.linear;
+        final strategy = retryDelayStrategy ?? DelayStrategies.linear;
         retryDelay = strategy(
           current: retryDelay,
           initial: initialRetryDelay,
