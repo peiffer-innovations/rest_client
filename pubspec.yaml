@@ -1,6 +1,6 @@
 name: 'rest_client'
 description: 'A Dart implementation of the a REST client that supports using an Isolate for decoding.'
-version: '2.2.3+3'
+version: '2.2.3+4'
 homepage: 'https://github.com/peiffer-innovations/rest_client'
 
 environment: 
@@ -11,7 +11,7 @@ dependencies:
   intl: '^0.18.1'
   logging: '^1.2.0'
   meta: '^1.9.1'
-  uuid: '^4.0.0'
+  uuid: '^4.1.0'
 
 dev_dependencies: 
   test: '^1.24.6'
