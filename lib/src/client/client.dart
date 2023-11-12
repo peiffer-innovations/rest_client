@@ -251,7 +251,7 @@ class Client {
               (response.statusCode < 200 || response.statusCode >= 400)) {
             throw RestException(
               message: exception != null
-                  ? 'Error from server: ${exception}'
+                  ? 'Error from server: $exception'
                   : 'Error code received from server: ${response.statusCode}',
               response: response,
             );
@@ -259,7 +259,7 @@ class Client {
         } else {
           throw RestException(
             message: exception != null
-                ? 'Error from server: ${exception}'
+                ? 'Error from server: $exception'
                 : 'Error code received from server: ${response.statusCode}',
             response: response,
           );

@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('binary', () async {
-    final request = Request(
+    const request = Request(
       method: RequestMethod.get,
       url:
           'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
@@ -22,14 +22,14 @@ void main() {
   test(
     'interceptor',
     () async {
-      final request = Request(
+      const request = Request(
         method: RequestMethod.get,
         url: 'https://archive.org/metadata/principleofrelat00eins',
       );
 
       var client = Client(
         interceptor: Interceptor(
-          onModifyRequest: (_, __) async => Request(
+          onModifyRequest: (_, __) async => const Request(
             url: 'https://currentmillis.com/time/minutes-since-unix-epoch.php',
           ),
         ),
@@ -44,7 +44,7 @@ void main() {
 
       client = Client(
         interceptor: Interceptor(
-          onInterceptRequest: (_, __) async => Response(
+          onInterceptRequest: (_, __) async => const Response(
             body: 'Intercepted',
             headers: {
               'content-type': 'text/plain',
@@ -62,7 +62,7 @@ void main() {
 
       client = Client(
         interceptor: Interceptor(
-          onModifyResponse: (_, __, ___) async => Response(
+          onModifyResponse: (_, __, ___) async => const Response(
             body: 'Modified',
             headers: {
               'content-type': 'text/plain',
@@ -80,7 +80,7 @@ void main() {
   );
 
   test('success', () async {
-    final request = Request(
+    const request = Request(
       method: RequestMethod.get,
       url: 'https://archive.org/metadata/principleofrelat00eins',
     );

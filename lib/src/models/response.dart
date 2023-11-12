@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 class Response {
-  Response({
+  const Response({
     this.body,
     required this.headers,
     required this.statusCode,

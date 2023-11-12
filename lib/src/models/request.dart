@@ -5,7 +5,7 @@ import 'request_method.dart';
 
 @immutable
 class Request {
-  Request({
+  const Request({
     this.body,
     this.headers,
     RequestMethod? method,

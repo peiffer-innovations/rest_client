@@ -6,7 +6,7 @@ typedef DelayStrategy = Duration Function({
 class DelayStrategies {
   /// A delay strategy that grows linearly by adding the initial delay to the
   /// current.
-  static final linear = ({
+  static Duration linear({
     required Duration current,
     required Duration initial,
   }) =>
@@ -14,7 +14,7 @@ class DelayStrategies {
 
   /// A delay strategy that grows exponentially by always adding the current
   /// delay to itself.
-  static final progressive = ({
+  static Duration progressive({
     required Duration current,
     required Duration initial,
   }) =>

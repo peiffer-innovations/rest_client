@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 /// able to route / trace API calls via something like Fiddler2 / Charles Proxy.
 @immutable
 class Proxy {
-  Proxy({
+  const Proxy({
     this.ignoreBadCertificate = false,
     required this.url,
   });

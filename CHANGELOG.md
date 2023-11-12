@@ -1,3 +1,9 @@
+## [2.3.0] - November 12th, 2023
+
+* Dependency updates
+* Updated with latest analysis rules
+
+
 ## [2.2.3+7] - November 7, 2023
 
 * Automated dependency updates
