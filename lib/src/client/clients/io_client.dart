@@ -6,7 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:rest_client/rest_client.dart';
 
-http.Client createHttpClient({Proxy? proxy}) {
+http.Client createHttpClient({
+  Proxy? proxy,
+  bool withCredentials = false,
+}) {
   final httpClient = HttpClient();
   if (proxy != null) {
     httpClient.findProxy = (uri) => 'PROXY ${proxy.url}';

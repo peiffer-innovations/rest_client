@@ -39,16 +39,20 @@ class Client {
   /// allowing large responses to jank the UI and disables the isolate in Debug
   /// mode because the VS Code debugging plugin sometimes deadlocks due to
   /// isolates.
+  ///
+  /// The [withCredentials] will override the static default if set.
   Client({
     Interceptor? interceptor,
     Reporter? reporter,
     Proxy? proxy,
     this.timeout = _kDefaultTimeout,
     bool? useIsolate,
+    bool? withCredentials,
   })  : assert(timeout.inMilliseconds >= 1000),
         _interceptor = interceptor,
         _reporter = reporter,
-        _proxy = proxy {
+        _proxy = proxy,
+        _withCredentials = withCredentials {
     assert(() {
       _useIsolate = false;
       return true;
@@ -71,10 +75,16 @@ class Client {
   /// fallback default.
   static Reporter? reporter;
 
+  /// Whether to send credentials such as cookies or authorization headers for
+  /// cross-site requests.  Only has meaning when running in the browser.
+  static bool withCredentials = false;
+
+  final Duration timeout;
+
   final Interceptor? _interceptor;
   final Proxy? _proxy;
   final Reporter? _reporter;
-  final Duration timeout;
+  final bool? _withCredentials;
 
   bool _useIsolate = true;
 
@@ -96,6 +106,9 @@ class Client {
   /// If [throwRestExceptions] is true, exceptions will be thrown when an
   /// error status code is returned from the response. If false, the response,
   /// including the error, will be returned.
+  ///
+  /// The [withCredentials] will override the static and class level values if
+  /// set.
   Future<Response> execute({
     Authorizer? authorizer,
     StreamController<Response>? emitter,
@@ -107,6 +120,7 @@ class Client {
     DelayStrategy? retryDelayStrategy,
     Duration? timeout,
     bool throwRestExceptions = true,
+    bool? withCredentials,
   }) async {
     assert(timeout == null || timeout.inMilliseconds >= 1000);
     assert(retryCount >= 0);
@@ -125,7 +139,11 @@ class Client {
     while (fatalError != true && (attempts == 0 || attempts <= retryCount)) {
       attempts++;
 
-      final restClient = createHttpClient(proxy: _proxy ?? proxy);
+      final restClient = createHttpClient(
+        proxy: _proxy ?? proxy,
+        withCredentials:
+            withCredentials ?? _withCredentials ?? Client.withCredentials,
+      );
 
       try {
         reporter = reporter ?? _reporter ?? Client.reporter;

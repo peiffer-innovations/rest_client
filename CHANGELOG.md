@@ -1,3 +1,8 @@
+## [2.4.0] - November 12th, 2023
+
+* Updated with the `withCredentials` option for browser clients.
+
+
 ## [2.3.0] - November 12th, 2023
 
 * Dependency updates
